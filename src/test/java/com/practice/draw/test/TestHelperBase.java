@@ -20,7 +20,7 @@ public class TestHelperBase {
         command.execute();
         Result result = command.getResults();
         Assert.assertNull(result.getPoints());
-        Assert.assertFalse(result.isSuccess());
+        Assert.assertFalse(result.isSuccessful());
         Assert.assertNotEquals("",result.getMessage());
         printResults(result);
     }

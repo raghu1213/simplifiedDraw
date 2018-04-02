@@ -5,16 +5,14 @@ import com.practice.draw.command.Container;
 import com.practice.draw.command.Filler;
 import com.practice.draw.utils.Point;
 import com.practice.draw.utils.Result;
-import com.practice.draw.validator.Boundary;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DefaultController implements CommandController {
-   // private List<Result> results;
     private List<Command> commandList ;
-
+    private Container container;
     public DefaultController(){
         commandList = new ArrayList<>();
     }
@@ -25,19 +23,24 @@ public class DefaultController implements CommandController {
             if (commandList.size() > 0){
                 commandList.clear();
             }
+            this.container = (Container) command;
         }
+
         if (command instanceof Filler) {
-            List<Point> allPoints = this.getResults().stream().filter(r -> r.isSuccess()).flatMap(r -> r.getPoints().stream()).collect(Collectors.toList());
-
-            Boundary boundary = ((Container) this.commandList.stream().filter(c -> c instanceof Container).findFirst().get()).getBoundary();
-
-            ((Filler) command).setState(allPoints, boundary);
+            List<Point> allPoints = this.getResults()
+                    .stream()
+                    .filter(r -> r.isSuccessful())
+                    .flatMap(r -> r.getPoints().stream())
+                    .collect(Collectors.toList());
+            ((Filler) command).setState(allPoints);
         }
+
+        command.setValidator(container.getBoundaryValidator());
 
         command.execute();
 
         Result result = command.getResults();
-        if (result.isSuccess()) {
+        if (result.isSuccessful()) {
             commandList.add(command);
         }
         return result;

@@ -1,6 +1,6 @@
 package com.practice.draw.command;
 
-import com.practice.draw.validator.Boundary;
+import com.practice.draw.validator.Validator;
 import com.practice.draw.validator.BoundaryValidator;
 import com.practice.draw.utils.Result;
 import com.practice.draw.utils.CoordinateGenerator;
@@ -22,23 +22,23 @@ public class CanvasCommand extends CommandBase implements Container {
 
     @Override
     public void execute() {
-        if (this.validate(this.getCommandString(),3)){
+        if (this.validateInputCommand(this.getCommandString(), 3)) {
             init();
-            Point topLeft = new Point(0,0);
-            Point bottomRight = new Point(width+1,height+1);
+            Point topLeft = new Point(0, 0);
+            Point bottomRight = new Point(width + 1, height + 1);
 
-            List<Point> allPoints = coordinateGenerator.getRectangle(topLeft,bottomRight,"-","|");
-                    
-            this.result= new Result(true,allPoints,"Success");
+            List<Point> allPoints = coordinateGenerator.getRectangle(topLeft, bottomRight, "-", "|");
 
+            this.result = new Result(true, allPoints, "Success");
+
+        } else {
+            this.result = new Result(false, null, "Invalid Canvas Command." + "\nUSAGE: C <w> <h>" + "\n     Takes 2 arguments" + "\n     w: Unsigned integer value for width" + "\n     h: Unsigned integer value for height");
         }
-        else {
-            this.result = new Result(false, null, "Invalid Canvas Command." +
-                    "\nUSAGE: C <w> <h>" +
-                    "\n     Takes 2 arguments"+
-                    "\n     w: Unsigned integer value for width" +
-                    "\n     h: Unsigned integer value for height");
-        }
+    }
+
+    @Override
+    public void setValidator(Validator validator) {
+
     }
 
     @Override
@@ -54,9 +54,9 @@ public class CanvasCommand extends CommandBase implements Container {
 
 
     @Override
-    public Boundary getBoundary() {
-        Point topLeft = new Point(0,0);
-        Point bottomRight = new Point(width+1,height+1);
-        return new BoundaryValidator(topLeft,bottomRight);
+    public Validator getBoundaryValidator() {
+        Point topLeft = new Point(0, 0);
+        Point bottomRight = new Point(width + 1, height + 1);
+        return new BoundaryValidator(topLeft, bottomRight);
     }
 }

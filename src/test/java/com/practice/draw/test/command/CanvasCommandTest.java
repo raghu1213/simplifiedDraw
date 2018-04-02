@@ -35,7 +35,7 @@ public class CanvasCommandTest extends TestHelperBase {{
                 command.get().execute();
                 Result result = command.get().getResults();
 
-                Assert.assertTrue(result.isSuccess());
+                Assert.assertTrue(result.isSuccessful());
                 Assert.assertThat(result.toString(), is(expectedCanvas));
 
                 printResults(result);
@@ -52,7 +52,7 @@ public class CanvasCommandTest extends TestHelperBase {{
                 command.get().execute();
                 Result result = command.get().getResults();
 
-                Assert.assertFalse(result.isSuccess());
+                Assert.assertFalse(result.isSuccessful());
                 printResults(result);
             });
         });

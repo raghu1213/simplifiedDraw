@@ -2,7 +2,7 @@ package com.practice.draw.validator;
 
 import com.practice.draw.utils.Point;
 
-public class BoundaryValidator implements Boundary {
+public class BoundaryValidator implements Validator {
 
   private final Point start;
   private final Point end;

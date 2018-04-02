@@ -1,7 +1,7 @@
 package com.practice.draw.command;
 
-import com.practice.draw.validator.Boundary;
+import com.practice.draw.validator.Validator;
 
 public interface Container {
-   Boundary getBoundary();
+   Validator getBoundaryValidator();
 }

@@ -7,26 +7,41 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Result {
-    public Result(boolean successful, List<Point> points, String message) {
-        this.successful = successful;
+    public Result(boolean isSuccessful, List<Point> points, String message) {
+        this.isSuccessful = isSuccessful;
         this.points = points;
         this.message = message;
     }
+    public Result(){
 
-    boolean successful;
+    }
+
+    boolean isSuccessful;
     List<Point> points;
     String message ;
 
-    public boolean isSuccess() {
-        return successful;
+    public boolean isSuccessful() {
+        return isSuccessful;
+    }
+
+    public void setSuccessful(boolean successful) {
+        isSuccessful = successful;
     }
 
     public List<Point> getPoints() {
         return points;
     }
 
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override

@@ -22,7 +22,7 @@ public class Application {
 
                 Result result = controller.execute(command);
 
-                if (result.isSuccess()) {
+                if (result.isSuccessful()) {
                     Printer.print(controller.getResults());
                 } else {
                     System.out.println(result.getMessage());

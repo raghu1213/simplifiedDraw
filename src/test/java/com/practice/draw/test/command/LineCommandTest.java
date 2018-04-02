@@ -60,7 +60,6 @@ public class LineCommandTest extends TestHelperBase {{
             });
             then("Invalid command message is printed",()-> invalidCommandTest(command.get()));
 
-
         });
 
     });

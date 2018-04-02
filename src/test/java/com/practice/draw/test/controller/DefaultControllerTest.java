@@ -31,27 +31,12 @@ public class DefaultControllerTest extends TestHelperBase {{
                 printCommandString(command);
                 controller.execute(command);
             });
-            then ("Draws a canvas",()->{
+            then ("Draws a canvas",()-> {
 
-
-
-
-
-
-
-
-
-
-
-                Assert.assertThat(controller.getResults().size(),is(1));
-                String expectedResult = "----------------------\n" +
-                                        "|                    |\n" +
-                                        "|                    |\n" +
-                                        "|                    |\n" +
-                                        "|                    |\n" +
-                                        "----------------------\n";
-               Assert.assertThat(controller.getResults().get(0).toString(),is(expectedResult));
-               printResults(controller.getResults().get(0));
+                Assert.assertThat(controller.getResults().size(), is(1));
+                String expectedResult = "----------------------\n" + "|                    |\n" + "|                    |\n" + "|                    |\n" + "|                    |\n" + "----------------------\n";
+                Assert.assertThat(controller.getResults().get(0).toString(), is(expectedResult));
+                printResults(controller.getResults().get(0));
 
             });
 
@@ -131,7 +116,7 @@ public class DefaultControllerTest extends TestHelperBase {{
 
                 ((Filler)command).setState(controller.getResults().stream()
                         .flatMap(r->r.getPoints().stream())
-                        .collect(Collectors.toList()),container.get().getBoundary());
+                        .collect(Collectors.toList()));
 
                 controller.execute(command);
 
@@ -156,10 +141,10 @@ public class DefaultControllerTest extends TestHelperBase {{
 
                 Command command = CommandFactory.createCommand("B 10 3 *");
                 printCommandString(command);
-
+                command.setValidator(container.get().getBoundaryValidator());
                 ((Filler)command).setState(controller.getResults().stream()
                         .flatMap(r->r.getPoints().stream())
-                        .collect(Collectors.toList()),container.get().getBoundary());
+                        .collect(Collectors.toList()));
 
                 controller.execute(command);
 
@@ -180,9 +165,10 @@ public class DefaultControllerTest extends TestHelperBase {{
                 Assert.assertThat(result.toString(),is(expectedResult));
                 printResults(result);
             });
-            
 
         });
+
+
     });
 }
 }

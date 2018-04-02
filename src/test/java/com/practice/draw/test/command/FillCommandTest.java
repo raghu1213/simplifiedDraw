@@ -4,7 +4,7 @@ import com.greghaskins.spectrum.Spectrum;
 import com.greghaskins.spectrum.Variable;
 import com.practice.draw.test.TestHelperBase;
 import com.practice.draw.command.FillCommand;
-import com.practice.draw.validator.Boundary;
+import com.practice.draw.validator.Validator;
 import com.practice.draw.validator.BoundaryValidator;
 import com.practice.draw.utils.Result;
 import com.practice.draw.utils.Point;
@@ -26,18 +26,19 @@ public class FillCommandTest extends TestHelperBase {
 
       scenario("Only one shape provided", () -> {
         final Variable<List<Point>> emptyCanvas = new Variable<>();
-        final Variable<Boundary> boundryValidator = new Variable<>();
+
         given("An empty canvas", () -> {
           emptyCanvas.set(getEmptyCanvas());
         });
-        and("A validator for container", () -> {
-          boundryValidator.set(new BoundaryValidator(emptyCanvas.get().stream().min(Comparator.naturalOrder()).get(), emptyCanvas.get().stream().max(Comparator.naturalOrder()).get()));
-        });
+
         when("Color is o with valid start point", () -> {
             command.set(new FillCommand("B 1 1 o"));
-            command.get().setState(emptyCanvas.get(), boundryValidator.get());
+            command.get().setState(emptyCanvas.get());
             printCommandString(command.get());
 
+        });
+        and ("A boundary validator is provided",()->{
+            command.get().setValidator(new BoundaryValidator(emptyCanvas.get().stream().min(Comparator.naturalOrder()).get(), emptyCanvas.get().stream().max(Comparator.naturalOrder()).get()));
         });
         then("Fill the shape with color o", () -> {
           String expectedShape =  "oooo\n" +
@@ -51,7 +52,7 @@ public class FillCommandTest extends TestHelperBase {
 
         });
       });
-      scenario("Invalid parameteres are supplied",()->{
+      scenario("Invalid parameters are supplied",()->{
           when("2nd and 3rd args are not integers",()->{
               command.set(new FillCommand("B b 1 o"));
               printCommandString(command.get());
@@ -69,6 +70,13 @@ public class FillCommandTest extends TestHelperBase {
               printCommandString(command.get());
           });
           then("Error message is printed",()->invalidCommandTest(command.get()));
+
+          when("The coordinate lies outside the container",()->{
+              command.set(new FillCommand("B 5 5 o"));
+              command.get().setValidator(new BoundaryValidator(new Point(0,0), new Point(5,4)));
+              printCommandString(command.get());
+          });
+          then("The command gives the error",()-> invalidCommandTest(command.get()));
 
       });
 

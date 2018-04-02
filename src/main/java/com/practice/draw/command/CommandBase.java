@@ -1,12 +1,14 @@
 package com.practice.draw.command;
 
 import com.practice.draw.utils.Result;
+import com.practice.draw.validator.Validator;
 
 public abstract class CommandBase implements Command{
 
 
     public String commandString;
     public Result result;
+    private Validator boundaryValidator;
 
     public CommandBase(String inputCommand) {
 
@@ -14,8 +16,17 @@ public abstract class CommandBase implements Command{
     }
 
 
+    @Override
+    public String getCommandString() {
+        return commandString;
+    }
 
-    protected boolean validate(String inputCommand,int length) {
+    @Override
+    public void setValidator(Validator validator) {
+        this.boundaryValidator = validator;
+    }
+
+    protected boolean validateInputCommand(String inputCommand, int length) {
         String[] args = inputCommand.split(" ");
         boolean isValid = true;
         if (args.length!=length) {
@@ -35,13 +46,9 @@ public abstract class CommandBase implements Command{
         }
 
         return isValid;
-
-
     }
 
-
-    @Override
-    public String getCommandString() {
-        return commandString;
+    protected Validator getBoundaryValidator() {
+        return boundaryValidator;
     }
 }

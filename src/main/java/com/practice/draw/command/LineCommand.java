@@ -3,6 +3,7 @@ package com.practice.draw.command;
 import com.practice.draw.utils.Result;
 import com.practice.draw.utils.CoordinateGenerator;
 import com.practice.draw.utils.Point;
+import com.practice.draw.validator.Validator;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class LineCommand extends CommandBase {
 
     private final CoordinateGenerator coordinateGenerator;
 
-    public LineCommand(String args, CoordinateGenerator coordinateGenerator){
+    public LineCommand(String args, CoordinateGenerator coordinateGenerator) {
         super(args);
 
         this.coordinateGenerator = coordinateGenerator;
@@ -23,18 +24,18 @@ public class LineCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (this.validate(this.getCommandString(),5)) {
+        if (this.validateInputCommand(this.getCommandString(), 5)) {
             init();
-            List<Point> allPoints = this.coordinateGenerator.getCooridnatesBetweenTwoPoints(x1, y1, x2, y2, "x");
-            result = new Result(true, allPoints, "Success");
+            if (getBoundaryValidator() != null && !getBoundaryValidator().validate(new Point(x1, y1)) && !getBoundaryValidator().validate(new Point(x2, y2))) {
+                result = new Result(false, null, "Line is not within container");
+            } else {
+                List<Point> allPoints = this.coordinateGenerator.getCooridnatesBetweenTwoPoints(x1, y1, x2, y2, "x");
+                result = new Result(true, allPoints, "Success");
+            }
         } else {
-            result = new Result(false, null, "Invalid Line Command." +
-                    "\n USAGE: L <x1> <y1> <x2> <y2>" +
-                    "\n     Takes 4 arguments"+
-                    "\n     All arguments must be unsigned integers");
+            result = new Result(false, null, "Invalid Line Command." + "\n USAGE: L <x1> <y1> <x2> <y2>" + "\n     Takes 4 arguments" + "\n     All arguments must be unsigned integers");
         }
     }
-
 
 
     @Override
